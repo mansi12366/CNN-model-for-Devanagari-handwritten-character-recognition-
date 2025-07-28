@@ -1,0 +1,102 @@
+Task 1: Conceptual Questions 
+
+
+
+1. What is the difference between RNN and LSTM?
+Recurrent Neural Networks (RNNs) are designed to process sequential data by maintaining a hidden state that captures past information. However, they struggle with long-term dependencies. LSTM (Long Short-Term Memory) is a special type of RNN that uses memory cells and gating mechanisms (input, output, forget gates) to better preserve information over long sequences and avoid vanishing gradients.
+
+2. What is the vanishing gradient problem, and how does LSTM solve it?
+The vanishing gradient problem occurs during backpropagation in RNNs when gradients shrink exponentially, making it difficult for the model to learn long-term dependencies. LSTM solves this by using a memory cell and gates that control the flow of information, allowing gradients to pass through many time steps without vanishing.
+
+3. Explain the purpose of the Encoder-Decoder architecture.
+The encoder-decoder architecture is used in sequence-to-sequence tasks like translation or summarization. The encoder processes the input sequence and compresses it into a context vector, which summarizes the entire input. The decoder then uses this context vector to generate the target output sequence.
+
+4. In a sequence-to-sequence model, what are the roles of the encoder and decoder?
+The encoder reads and encodes the input sequence into a fixed-length context vector representing its meaning. The decoder uses this vector to generate the output sequence, one element at a time, based on the learned mapping between input and output sequences.
+
+5. How is attention different from a basic encoder-decoder model?
+In a basic encoder-decoder model, the decoder relies only on a single context vector, which can limit performance on long sequences. Attention mechanisms allow the decoder to access all encoder outputs and focus on relevant parts of the input at each decoding step, improving accuracy and handling of longer sequences. 
+
+Input Sequence:
+The model receives an input sequence 
+𝑋
+=
+[
+𝑥
+1
+,
+𝑥
+2
+,
+.
+.
+.
+,
+𝑥
+𝑇
+]
+X=[x 
+1
+​
+ ,x 
+2
+​
+ ,...,x 
+T
+​
+ ], such as a sentence in English.
+
+Encoder (RNN or LSTM):
+Each element 
+𝑥
+𝑡
+x 
+t
+​
+  is passed into the encoder one step at a time. The encoder updates its hidden state 
+ℎ
+𝑡
+h 
+t
+​
+  at each time step:
+
+ℎ
+𝑡
+=
+RNN/LSTM
+(
+𝑥
+𝑡
+,
+ℎ
+𝑡
+−
+1
+)
+h 
+t
+​
+ =RNN/LSTM(x 
+t
+​
+ ,h 
+t−1
+​
+ )
+After processing the full sequence, the final hidden state (or cell state for LSTM) becomes the context vector.
+
+Context Vector:
+This is a fixed-length vector (usually the final hidden state of the encoder) that captures the meaning of the entire input sequence and is passed to the decoder.
+
+
+Input Sequence:      x1 → x2 → x3 → ... → xT
+                         ↓     ↓     ↓
+                     Encoder RNN/LSTM (h1 → h2 → h3 → ... → hT)
+                                             ↓
+                                    Context Vector (hT or [hT, cT])
+
+Decoder RNN/LSTM:  (uses context vector as initial state)
+                        ↓     ↓     ↓
+               y0 → y1 → y2 → ... → yT'
+(Output Sequence: Start → translated word1 → ... → End)
